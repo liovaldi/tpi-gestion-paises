@@ -55,6 +55,59 @@ try:
 except Exception as e:
     print(f" Error al intentar guardar los datos: {e}")
 
+def agregar_pais(lista_paises):
+    """
+    Pide al usuario los datos de un nuevo país, los valida rigurosamente
+    y, si todo es correcto, lo añade a la lista del sistema.
+    """
+    print("\n--- REGISTRAR NUEVO PAÍS ---")
+    
+    # 1. Validación del Nombre
+    nombre = input("Ingrese el nombre del país: ").strip()
+    if not nombre:
+        print("Error: El nombre del país no puede quedar vacío.")
+        return lista_paises
+        
+    # Verificamos si el país ya existe en la lista para no duplicarlo
+    for pais in lista_paises:
+        if pais["nombre"].lower() == nombre.lower():
+            print(f" El país '{nombre}' ya se encuentra registrado en el sistema.")
+            return lista_paises
+
+    # 2. Validación de la Población (Debe ser un número entero positivo)
+    poblacion_input = input("Ingrese la cantidad de población: ").strip()
+    if not poblacion_input.isdigit():
+        print("Error: La población debe ser un número entero positivo (sin letras ni puntos).")
+        return lista_paises
+    poblacion = int(poblacion_input)
+
+    # 3. Validación de la Superficie (Debe ser un número entero positivo)
+    superficie_input = input("Ingrese la superficie (en km²): ").strip()
+    if not superficie_input.isdigit():
+        print(" Error: La superficie debe ser un número entero positivo.")
+        return lista_paises
+    superficie = int(superficie_input)
+
+    # 4. Validación del Continente
+    continente = input("Ingrese el continente: ").strip()
+    if not continente:
+        print(" Error: El continente no puede quedar vacío.")
+        return lista_paises
+
+    # Si pasó todos los filtros, creamos el diccionario del nuevo país
+    nuevo_pais = {
+        "nombre": nombre,
+        "poblacion": poblacion,
+        "superficie": superficie,
+        "continente": continente
+    }
+    
+    # Lo agregamos a la lista que está en la memoria del programa
+    lista_paises.append(nuevo_pais)
+    print(f"¡{nombre} ha sido agregado exitosamente a la lista local!")
+    
+    return lista_paises
+
 
 # --- MENÚ PRINCIPAL Y CONTROLADOR (Persona A) ---
 
