@@ -1,7 +1,7 @@
 import csv
 import os
 
-# --- LOGICA DE PERSISTENCIA ---
+# --- LOGICA DE PERSISTENCIA (Persona A) ---
 
 def leer_csv(nombre_archivo="paises.csv"):
     """
@@ -12,7 +12,7 @@ def leer_csv(nombre_archivo="paises.csv"):
     
     # Validación de archivo existente
     if not os.path.exists(nombre_archivo):
-        print(f" Alerta: El archivo '{nombre_archivo}' no existe. Se iniciará con una lista vacía.")
+        print(f"Alerta: El archivo '{nombre_archivo}' no existe. Se iniciará con una lista vacía.")
         return lista_paises
 
     try:
@@ -28,32 +28,32 @@ def leer_csv(nombre_archivo="paises.csv"):
                 }
                 lista_paises.append(pais)
     except FileNotFoundError:
-        print(" Error: Archivo no encontrado.")
+        print("Error: Archivo no encontrado.")
     except ValueError:
-        print(" Error: El CSV contiene datos con formatos incorrectos (ej. texto en población).")
+        print("Error: El CSV contiene datos con formatos incorrectos (ej. texto en población).")
     except Exception as e:
-        print(f" Ocurrió un error inesperado al leer: {e}")
+        print(f"Ocurrió un error inesperado al leer: {e}")
         
     return lista_paises
 
 def guardar_csv(lista_paises, nombre_archivo="paises.csv"):
     """
-Toma la lista de países que tenemos en Python y la escribe
-adentro del archivo CSV para que los datos queden guardados.
-"""
-try:
-    with open(nombre_archivo, mode="w", encoding="utf-8", newline="") as archivo:
-        # Le decimos cómo se llaman las columnas de nuestro archivo
-        campos = ["nombre", "poblacion", "superficie", "continente"]            
-        # Creamos el escritor que sabe traducir diccionarios a filas de CSV
-        escritor = csv.DictWriter(archivo, fieldnames=campos)            
-        # Escribimos los títulos de las columnas (la primera fila)
-        escritor.writeheader()            
-        # Escribimos todos los países de nuestra lista
-        escritor.writerows(lista_paises)            
-    print(" ¡Cambios guardados con éxito en el archivo CSV!")
-except Exception as e:
-    print(f" Error al intentar guardar los datos: {e}")
+    Toma la lista de países que tenemos en Python y la escribe
+    adentro del archivo CSV para que los datos queden guardados.
+    """
+    try:
+        with open(nombre_archivo, mode="w", encoding="utf-8", newline="") as archivo:
+            # Le decimos cómo se llaman las columnas de nuestro archivo
+            campos = ["nombre", "poblacion", "superficie", "continente"]            
+            # Creamos el escritor que sabe traducir diccionarios a filas de CSV
+            escritor = csv.DictWriter(archivo, fieldnames=campos)            
+            # Escribimos los títulos de las columnas (la primera fila)
+            escritor.writeheader()            
+            # Escribimos todos los países de nuestra lista
+            escritor.writerows(lista_paises)            
+        print("¡Cambios guardados con éxito en el archivo CSV!")
+    except Exception as e:
+        print(f"Error al intentar guardar los datos: {e}")
 
 def agregar_pais(lista_paises):
     """
@@ -71,7 +71,7 @@ def agregar_pais(lista_paises):
     # Verificamos si el país ya existe en la lista para no duplicarlo
     for pais in lista_paises:
         if pais["nombre"].lower() == nombre.lower():
-            print(f" El país '{nombre}' ya se encuentra registrado en el sistema.")
+            print(f"El país '{nombre}' ya se encuentra registrado en el sistema.")
             return lista_paises
 
     # 2. Validación de la Población (Debe ser un número entero positivo)
@@ -84,14 +84,14 @@ def agregar_pais(lista_paises):
     # 3. Validación de la Superficie (Debe ser un número entero positivo)
     superficie_input = input("Ingrese la superficie (en km²): ").strip()
     if not superficie_input.isdigit():
-        print(" Error: La superficie debe ser un número entero positivo.")
+        print("Error: La superficie debe ser un número entero positivo.")
         return lista_paises
     superficie = int(superficie_input)
 
     # 4. Validación del Continente
     continente = input("Ingrese el continente: ").strip()
     if not continente:
-        print(" Error: El continente no puede quedar vacío.")
+        print("Error: El continente no puede quedar vacío.")
         return lista_paises
 
     # Si pasó todos los filtros, creamos el diccionario del nuevo país
@@ -134,11 +134,13 @@ def main():
         opcion = input("Seleccione una opción (1-7): ").strip()
         
         if opcion == "1":
-            print("\n[Próximamente] Aquí irá la función agregar_pais()") # Fase 1
+            # Conectamos las funciones que preparamos
+            datos_sistema = agregar_pais(datos_sistema)
+            guardar_csv(datos_sistema, archivo_datos)
         elif opcion == "2":
             print("\n[Próximamente] Aquí irá la función modificar_pais()") # Fase 1
         elif opcion == "3":
-            print("\nOpción no disponible - Módulo a cargo de Persona B.") # Marcador de posición
+            print("\nOpción no disponible - Módulo a cargo de Persona B.")
         elif opcion == "4":
             print("\nOpción no disponible - Módulo a cargo de Persona B.")
         elif opcion == "5":
@@ -149,7 +151,7 @@ def main():
             print("\n¡Gracias por utilizar el sistema! Saliendo...")
             break
         else:
-            print("❌ Opción inválida. Por favor, elija un número del 1 al 7.")
+            print(" Opción inválida. Por favor, elija un número del 1 al 7.")
 
 if __name__ == "__main__":
     main()
