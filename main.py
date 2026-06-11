@@ -192,7 +192,10 @@ def main():
             datos_sistema = agregar_pais(datos_sistema)
             guardar_csv(datos_sistema, archivo_datos)
         elif opcion == "2":
-            print("\n[Próximamente] Aquí irá la función modificar_pais()") # Fase 1
+        # 1. Modificamos el país en la memoria
+            datos_sistema = modificar_pais(datos_sistema)
+        # 2. Guardamos los cambios inmediatamente en el CSV
+            guardar_csv(datos_sistema, archivo_datos)
         elif opcion == "3":
             print("\nOpción no disponible - Módulo a cargo de Persona B.")
         elif opcion == "4":
