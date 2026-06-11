@@ -108,6 +108,60 @@ def agregar_pais(lista_paises):
     
     return lista_paises
 
+def modificar_pais(lista_paises):
+    """
+    Busca un país por nombre y permite al usuario modificar sus campos
+    (población, superficie o continente) aplicando las validaciones.
+    """
+    print("\n--- MODIFICAR DATOS DE UN PAÍS ---")
+    nombre_buscar = input("Ingrese el nombre del país que desea modificar: ").strip()
+    
+    # Buscamos si el país realmente existe en nuestra lista
+    pais_encontrado = None
+    for pais in lista_paises:
+        if pais["nombre"].lower() == nombre_buscar.lower():
+            pais_encontrado = pais
+            break
+            
+    if not pais_encontrado:
+        print(f" Error: El país '{nombre_buscar}' no se encuentra registrado.")
+        return lista_paises
+
+    print(f"\nPaís seleccionado: {pais_encontrado['nombre']}")
+    print(f"1. Modificar Población (Actual: {pais_encontrado['poblacion']})")
+    print(f"2. Modificar Superficie (Actual: {pais_encontrado['superficie']})")
+    print(f"3. Modificar Continente (Actual: {pais_encontrado['continente']})")
+    
+    opcion_mod = input("Seleccione qué dato desea modificar (1-3): ").strip()
+    
+    if opcion_mod == "1":
+        nueva_pob = input("Ingrese la nueva cantidad de población: ").strip()
+        if not nueva_pob.isdigit() or int(nueva_pob) <= 0:
+            print(" Error: La población debe ser un número entero positivo.")
+            return lista_paises
+        pais_encontrado["poblacion"] = int(nueva_pob)
+        print(f"¡Población de {pais_encontrado['nombre']} actualizada con éxito!")
+        
+    elif opcion_mod == "2":
+        nueva_sup = input("Ingrese la nueva superficie (en km²): ").strip()
+        if not nueva_sup.isdigit() or int(nueva_sup) <= 0:
+            print("Error: La superficie debe ser un número entero positivo.")
+            return lista_paises
+        pais_encontrado["superficie"] = int(nueva_sup)
+        print(f"¡Superficie de {pais_encontrado['nombre']} actualizada con éxito!")
+        
+    elif opcion_mod == "3":
+        nuevo_cont = input("Ingrese el nuevo continente: ").strip()
+        if not nuevo_cont:
+            print("Error: El continente no puede quedar vacío.")
+            return lista_paises
+        pais_encontrado["continente"] = nuevo_cont
+        print(f"¡Continente de {pais_encontrado['nombre']} actualizado con éxito!")
+        
+    else:
+        print(" Opción inválida. No se realizaron cambios.")
+        
+    return lista_paises
 
 # --- MENÚ PRINCIPAL Y CONTROLADOR (Persona A) ---
 
