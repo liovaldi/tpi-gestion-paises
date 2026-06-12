@@ -54,6 +54,22 @@ def filtrar_por_rango_poblacion(paises, minimo, maximo):
     return resultados
 
 
+def filtrar_por_rango_superficie(paises, minimo, maximo):
+    # Ambos valores sean números positivos
+    if minimo < 0 or maximo < 0:
+        return None
+
+    # Mínimo no sea mayor que el máximo
+    if minimo > maximo:
+        return None
+
+    resultados = []
+    for pais in paises:
+        if minimo <= pais["superficie"] <= maximo:
+            resultados.append(pais)
+
+    return resultados
+
 # bloque de pruebas
 if __name__ == "__main__":
     
@@ -61,9 +77,13 @@ if __name__ == "__main__":
     # (En el futuro, acá llamar a la función que lee el CSV real)
     # paises = leer_csv_real() 
 
+
     # Usamos los datos ficticios
     paises = obtener_paises_ficticios()
     
+
+    print("-------------FILTRADO POR CONTINENTE--------------------/n")
+
     print("Buscando 'america':")
     for p in filtrar_por_continente(paises, "america"):
         print(f"  - {p['nombre']}")
@@ -85,7 +105,7 @@ if __name__ == "__main__":
             print(f"  - {p['nombre']}")
 
     
-
+    print("-------------FILTRADO POR RANGO POBLACION--------------------/n")
     # Caso 1: rango válido con resultados
     print("Población entre 40 y 70 millones:")
     resultado = filtrar_por_rango_poblacion(paises, 40000000, 70000000)
@@ -125,3 +145,37 @@ if __name__ == "__main__":
     else:
         for p in resultado:
             print(f"  - {p['nombre']} ({p['poblacion']})")
+
+
+    print("-------------FILTRADO POR SUPERFICIE--------------------/n")
+
+    # Caso 1: rango válido con resultados
+    print("Superficie entre 300000 y 700000 km²:")
+    resultado = filtrar_por_rango_superficie(paises, 300000, 700000)
+    if resultado is None:
+        print("  Rango inválido.")
+    elif not resultado:
+        print("  No hay países en ese rango.")
+    else:
+        for p in resultado:
+            print(f"  - {p['nombre']} ({p['superficie']} km²)")
+
+    # Caso 2: rango válido pero sin ningún país que entre
+    print("\nSuperficie entre 1 y 1000 km² (no entra nadie):")
+    resultado = filtrar_por_rango_superficie(paises, 1, 1000)
+    if resultado is None:
+        print("  Rango inválido.")
+    elif not resultado:
+        print("  No hay países en ese rango.")
+    else:
+        for p in resultado:
+            print(f"  - {p['nombre']} ({p['superficie']} km²)")
+
+    # Caso 3: mínimo mayor que máximo
+    print("\nMínimo mayor que máximo (8000000 - 500000):")
+    resultado = filtrar_por_rango_superficie(paises, 8000000, 500000)
+    if resultado is None:
+        print("  Error: el mínimo no puede ser mayor que el máximo.")
+    else:
+        for p in resultado:
+            print(f"  - {p['nombre']} ({p['superficie']} km²)")
