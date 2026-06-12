@@ -86,3 +86,42 @@ if __name__ == "__main__":
 
     
 
+    # Caso 1: rango válido con resultados
+    print("Población entre 40 y 70 millones:")
+    resultado = filtrar_por_rango_poblacion(paises, 40000000, 70000000)
+    if resultado is None:
+        print("  Rango inválido.")
+    elif not resultado:
+        print("  No hay países en ese rango.")
+    else:
+        for p in resultado:
+            print(f"  - {p['nombre']} ({p['poblacion']})")
+
+    # Caso 2: rango válido pero sin ningún país que entre
+    print("\nPoblación entre 1 y 1000 (no entra nadie):")
+    resultado = filtrar_por_rango_poblacion(paises, 1, 1000000000)
+    if resultado is None:
+        print("  Rango inválido.")
+    elif not resultado:
+        print("  No hay países en ese rango.")
+    else:
+        for p in resultado:
+            print(f"  - {p['nombre']} ({p['poblacion']})")
+
+    # Caso 3: mínimo mayor que máximo
+    print("\nMínimo mayor que máximo (100 millones - 10 millones):")
+    resultado = filtrar_por_rango_poblacion(paises, 100000000, 10000000)
+    if resultado is None:
+        print("  Error: el mínimo no puede ser mayor que el máximo.")
+    else:
+        for p in resultado:
+            print(f"  - {p['nombre']} ({p['poblacion']})")
+
+    # Caso 4: valores negativos
+    print("\nValores negativos (-5 a 100):")
+    resultado = filtrar_por_rango_poblacion(paises, -5, 100)
+    if resultado is None:
+        print("  Error: los valores deben ser números positivos.")
+    else:
+        for p in resultado:
+            print(f"  - {p['nombre']} ({p['poblacion']})")
