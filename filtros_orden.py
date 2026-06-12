@@ -20,7 +20,7 @@ def normalizar(texto):
         if unicodedata.category(c) != 'Mn'
     )
 
-#programar filtros 
+#programar FILTROS 
 def filtrar_por_continente(lista_paises, continente_buscado):
     #  lógica 
     # Crear una lista vacía para los resultados
@@ -69,6 +69,77 @@ def filtrar_por_rango_superficie(paises, minimo, maximo):
             resultados.append(pais)
 
     return resultados
+
+#Buscar PAIS
+def buscar_pais(paises, texto):
+    resultados = []
+    texto_normalizado = normalizar(texto)
+
+    for pais in paises:
+        nombre_normalizado = normalizar(pais["nombre"])
+
+        # Verificamos si el texto buscado está contenido en el nombre
+        if texto_normalizado in nombre_normalizado:
+            resultados.append(pais)
+
+    return resultados
+
+
+
+
+#programar ORDENAMIENTOS
+#por NOMBRE
+def ordenar_por_nombre(paises, ascendente=True):
+    # Copiamos la lista para no modificar la original
+    lista = paises.copy()
+    n = len(lista)
+#BUBLE SORT: recorrer la lista comparando elementos de a pares consecutivos, y si están en el orden incorrecto, intercambiarlos
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if ascendente:
+                # Si el actual es mayor que el siguiente, intercambiamos
+                if lista[j]["nombre"] > lista[j + 1]["nombre"]:
+                    lista[j], lista[j + 1] = lista[j + 1], lista[j]
+            else:
+                # Para descendente, intercambiamos cuando el actual es menor
+                if lista[j]["nombre"] < lista[j + 1]["nombre"]:
+                    lista[j], lista[j + 1] = lista[j + 1], lista[j]
+
+    return lista
+
+#por POBLACION
+def ordenar_por_poblacion(paises, ascendente=True):
+    lista = paises.copy()
+    n = len(lista)
+
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if ascendente:
+                if lista[j]["poblacion"] > lista[j + 1]["poblacion"]:
+                    lista[j], lista[j + 1] = lista[j + 1], lista[j]
+            else:
+                if lista[j]["poblacion"] < lista[j + 1]["poblacion"]:
+                    lista[j], lista[j + 1] = lista[j + 1], lista[j]
+
+    return lista
+
+#por SUPERFICIE
+def ordenar_por_superficie(paises, ascendente=True):
+    lista = paises.copy()
+    n = len(lista)
+
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if ascendente:
+                if lista[j]["superficie"] > lista[j + 1]["superficie"]:
+                    lista[j], lista[j + 1] = lista[j + 1], lista[j]
+            else:
+                if lista[j]["superficie"] < lista[j + 1]["superficie"]:
+                    lista[j], lista[j + 1] = lista[j + 1], lista[j]
+
+    return lista
+
+
 
 # bloque de pruebas
 if __name__ == "__main__":
@@ -179,3 +250,49 @@ if __name__ == "__main__":
     else:
         for p in resultado:
             print(f"  - {p['nombre']} ({p['superficie']} km²)")
+
+
+    print("----------------ORDENAMIENTOS-------------------/n")
+
+    def mostrar(lista, titulo):
+        print(f"\n{titulo}")
+        for p in lista:
+            print(f" -{p['nombre']} | pob: {p['poblacion']} | sup: {p['superficie']}")
+
+    mostrar(paises, "Lista original:")
+
+    # Ordenar por nombre
+    mostrar(ordenar_por_nombre(paises, ascendente=True), "Por nombre (ascendente):")
+    mostrar(ordenar_por_nombre(paises, ascendente=False), "Por nombre (descendente):")
+
+    # Ordenar por población
+    mostrar(ordenar_por_poblacion(paises, ascendente=True), "Por población (ascendente):")
+    mostrar(ordenar_por_poblacion(paises, ascendente=False), "Por población (descendente):")
+
+    # Ordenar por superficie
+    mostrar(ordenar_por_superficie(paises, ascendente=True), "Por superficie (ascendente):")
+    mostrar(ordenar_por_superficie(paises, ascendente=False), "Por superficie (descendente):")
+
+    # Verificamos que la lista original no haya sido modificada
+    mostrar(paises, "Lista original (después de ordenar, debe seguir igual):")
+
+
+
+    print("----------------BÚSQUEDA POR NOMBRE-------------------/n")
+    def mostrar_resultado(texto):
+        print(f"\nBuscando '{texto}':")
+        resultado = buscar_pais(paises, texto)
+        if not resultado:
+            print("  No se encontraron países.")
+        else:
+            for p in resultado:
+                print(f"  - {p['nombre']}")
+
+    # Caso 1: coincidencia parcial que matchea varios países
+    mostrar_resultado("ar")          
+    # Caso 2: mayúsculas/minúsculas mezcladas
+    mostrar_resultado("JaPON")      
+    # Caso 3: con tilde, buscando sin tilde
+    mostrar_resultado("sudáfrica")     
+    # Caso 4: sin coincidencias
+    mostrar_resultado("xyz")         
