@@ -36,6 +36,24 @@ def filtrar_por_continente(lista_paises, continente_buscado):
     # Retornar la lista de resultados
     return resultados
 
+
+def filtrar_por_rango_poblacion(paises, minimo, maximo):
+    # Validar que ambos valores sean números positivos
+    if minimo < 0 or maximo < 0:
+        return None
+
+    # Validar que el mínimo no sea mayor que el máximo
+    if minimo > maximo:
+        return None
+
+    resultados = []
+    for pais in paises:
+        if minimo <= pais["poblacion"] <= maximo:
+            resultados.append(pais)
+
+    return resultados
+
+
 # bloque de pruebas
 if __name__ == "__main__":
     
@@ -67,3 +85,4 @@ if __name__ == "__main__":
             print(f"  - {p['nombre']}")
 
     
+
