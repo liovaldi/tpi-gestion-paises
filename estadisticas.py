@@ -1,9 +1,9 @@
 def pais_mayor_poblacion(paises):
-    # Caso de lista vacía
+    # lista vacía
     if not paises:
         return None
 
-    # Asumimos que el primer país es el de mayor población (hipótesis inicial)
+    # Asumimos que el primer país es el de mayor población luego se compara
     mayor = paises[0]
 
     # Recorremos el resto de la lista (desde el segundo elemento)
@@ -15,11 +15,11 @@ def pais_mayor_poblacion(paises):
 
 
 def pais_menor_poblacion(paises):
-    # Caso de lista vacía
+    # lista vacía
     if not paises:
         return None
 
-    # Asumimos que el primer país es el de menor población (hipótesis inicial)
+    # Asumimos que el primer país es el de menor población luego comparamos
     menor = paises[0]
 
     # Recorremos el resto de la lista (desde el segundo elemento)
@@ -30,6 +30,34 @@ def pais_menor_poblacion(paises):
     return menor
 
 
+def promedio_poblacion(paises):
+    # lista vacía
+    if not paises:
+        return None
+
+    suma = 0
+    for pais in paises:
+        suma += pais["poblacion"]
+
+    promedio = suma / len(paises)
+    return promedio
+
+
+def promedio_superficie(paises):
+    # lista vacía
+    if not paises:
+        return None
+
+    suma = 0
+    for pais in paises:
+        suma += pais["superficie"]
+
+    promedio = suma / len(paises)
+    return promedio
+
+
+
+
 if __name__ == "__main__":
     paises = [
         {"nombre": "Argentina", "poblacion": 45000000, "superficie": 2780400, "continente": "America"},
@@ -38,6 +66,8 @@ if __name__ == "__main__":
         {"nombre": "Bulgaria", "poblacion": 6900000, "superficie": 110879, "continente": "Europa"},
     ]
 
+
+    #Prueba funciones MAYOR y MENOR
     print("País con mayor población:")
     print(f"  {pais_mayor_poblacion(paises)}")
 
@@ -48,3 +78,12 @@ if __name__ == "__main__":
     print("\nCon lista vacía:")
     print(f"  Mayor: {pais_mayor_poblacion([])}")
     print(f"  Menor: {pais_menor_poblacion([])}")
+
+    #Prueba funciones PROMEDIO
+    print(f"Promedio de población: {promedio_poblacion(paises):.2f}")
+    print(f"Promedio de superficie: {promedio_superficie(paises):.2f}")
+
+    # Caso de lista vacía
+    print("\nCon lista vacía:")
+    print(f"  Promedio población: {promedio_poblacion([])}")
+    print(f"  Promedio superficie: {promedio_superficie([])}")
