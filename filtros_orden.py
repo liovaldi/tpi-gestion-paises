@@ -140,6 +140,9 @@ def ordenar_por_superficie(paises, ascendente=True):
     return lista
 
 
+#import os #Te da herramientas para interactuar con el sistema operativo de tu computadora
+#import csv #Importa el módulo nativo de Python especializado en archivos csv
+from main import leer_csv  # importamos la función desde main.py
 
 # bloque de pruebas
 if __name__ == "__main__":
@@ -147,10 +150,22 @@ if __name__ == "__main__":
     
     # (En el futuro, acá llamar a la función que lee el CSV real)
     # paises = leer_csv_real() 
+    paises = leer_csv("paises.csv")
+
+    # Chequeo rápido para confirmar que se leyó bien
+    print(f"Cantidad de países leídos: {len(paises)}")
+    if not paises:
+        print("La lista está vacía (no se encontró el CSV o está vacío). No se pueden correr las pruebas.")
+    else:
+        print(f"Ejemplo: {paises[0]}\n")
+
+
+
+
 
 
     # Usamos los datos ficticios
-    paises = obtener_paises_ficticios()
+    #paises = obtener_paises_ficticios()
     
 
     print("-------------FILTRADO POR CONTINENTE--------------------/n")
