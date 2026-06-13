@@ -1,3 +1,6 @@
+
+
+#MAYOR y MENOR
 def pais_mayor_poblacion(paises):
     # lista vacía
     if not paises:
@@ -12,7 +15,6 @@ def pais_mayor_poblacion(paises):
             mayor = pais
 
     return mayor
-
 
 def pais_menor_poblacion(paises):
     # lista vacía
@@ -30,6 +32,7 @@ def pais_menor_poblacion(paises):
     return menor
 
 
+#PROMEDIOS
 def promedio_poblacion(paises):
     # lista vacía
     if not paises:
@@ -41,7 +44,6 @@ def promedio_poblacion(paises):
 
     promedio = suma / len(paises)
     return promedio
-
 
 def promedio_superficie(paises):
     # lista vacía
@@ -55,8 +57,19 @@ def promedio_superficie(paises):
     promedio = suma / len(paises)
     return promedio
 
+#CANT CONTINENETES
+def cantidad_por_continente(paises):
+    resultados = {}
 
+    for pais in paises:
+        continente = pais["continente"]
 
+        if continente in resultados:
+            resultados[continente] += 1
+        else:
+            resultados[continente] = 1
+
+    return resultados
 
 if __name__ == "__main__":
     paises = [
@@ -87,3 +100,9 @@ if __name__ == "__main__":
     print("\nCon lista vacía:")
     print(f"  Promedio población: {promedio_poblacion([])}")
     print(f"  Promedio superficie: {promedio_superficie([])}")
+
+    #Prueba cant continentes
+    print(cantidad_por_continente(paises))
+
+    # Caso de lista vacía
+    print(cantidad_por_continente([]))
