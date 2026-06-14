@@ -1,6 +1,27 @@
 import csv
 import os
 
+#Importo funciones (GASTON)
+from filtros_orden import (
+    filtrar_por_continente,
+    filtrar_por_rango_poblacion,
+    filtrar_por_rango_superficie,
+    buscar_pais,
+    ordenar_por_nombre,
+    ordenar_por_poblacion,
+    ordenar_por_superficie,
+)
+from estadisticas import (
+    pais_mayor_poblacion,
+    pais_menor_poblacion,
+    promedio_poblacion,
+    promedio_superficie,
+    cantidad_por_continente,
+)
+
+
+
+
 # --- LOGICA DE PERSISTENCIA (Persona A) ---
 
 def leer_csv(nombre_archivo="paises.csv"):
@@ -150,6 +171,141 @@ def modificar_pais(lista_paises):
         
     return lista_paises
 
+
+# --- Continuacion de logica (GASTON) ---
+# ----- Funcion Aux para no repetir cod -------
+def mostrar_lista_paises(lista):
+    """Muestra una lista de países de forma prolija. Maneja el caso vacío."""
+    if not lista:
+        print("No se encontraron resultados.")
+        return
+    for pais in lista:
+        print(f"  - {pais['nombre']} | Población: {pais['poblacion']} | "
+            f"Superficie: {pais['superficie']} km² | Continente: {pais['continente']}")
+
+#Buscar un país por nombre
+def menu_buscar(datos_sistema):
+    print("\n--- BUSCAR PAÍS ---")
+    if not datos_sistema:
+        print("No hay países cargados.")
+        return
+
+    texto = input("Ingrese el nombre o parte del nombre a buscar: ").strip()
+    resultado = buscar_pais(datos_sistema, texto)
+
+    if not resultado:
+        print(f"No se encontraron países que coincidan con '{texto}'.")
+    else:
+        mostrar_lista_paises(resultado)
+
+#Filtrar países por: continente - rango poblacion - rango sup
+def menu_filtrar(datos_sistema):
+    print("\n--- FILTRAR PAÍSES ---")
+    if not datos_sistema:
+        print("No hay países cargados.")
+        return
+
+    print("1. Filtrar por continente")
+    print("2. Filtrar por rango de población")
+    print("3. Filtrar por rango de superficie")
+    opcion = input("Seleccione una opción (1-3): ").strip()
+
+    if opcion == "1":
+        continente = input("Ingrese el continente: ").strip()
+        resultado = filtrar_por_continente(datos_sistema, continente)
+        if not resultado:
+            print(f"No se encontraron países en el continente '{continente}'.")
+        else:
+            mostrar_lista_paises(resultado)
+
+    elif opcion == "2":
+        try:
+            minimo = int(input("Ingrese población mínima: "))
+            maximo = int(input("Ingrese población máxima: "))
+        except ValueError:
+            print("Error: debe ingresar números enteros válidos.")
+            return
+
+        resultado = filtrar_por_rango_poblacion(datos_sistema, minimo, maximo)
+        if resultado is None:
+            print("Rango inválido: el mínimo no puede ser mayor que el máximo, y ambos deben ser positivos.")
+        elif not resultado:
+            print("No hay países con población en ese rango.")
+        else:
+            mostrar_lista_paises(resultado)
+
+    elif opcion == "3":
+        try:
+            minimo = int(input("Ingrese superficie mínima (km²): "))
+            maximo = int(input("Ingrese superficie máxima (km²): "))
+        except ValueError:
+            print("Error: debe ingresar números enteros válidos.")
+            return
+
+        resultado = filtrar_por_rango_superficie(datos_sistema, minimo, maximo)
+        if resultado is None:
+            print("Rango inválido: el mínimo no puede ser mayor que el máximo, y ambos deben ser positivos.")
+        elif not resultado:
+            print("No hay países con superficie en ese rango.")
+        else:
+            mostrar_lista_paises(resultado)
+
+    else:
+        print("Opción inválida.")
+
+#Ordenar por: nombre - poblacion - superficie (asc/desc)
+def menu_ordenar(datos_sistema):
+    print("\n--- ORDENAR PAÍSES ---")
+    if not datos_sistema:
+        print("No hay países cargados para ordenar.")
+        return
+
+    print("1. Ordenar por nombre")
+    print("2. Ordenar por población")
+    print("3. Ordenar por superficie")
+    opcion = input("Seleccione una opción (1-3): ").strip()
+
+    print("1. Ascendente")
+    print("2. Descendente")
+    orden = input("Seleccione el orden (1-2): ").strip()
+    ascendente = (orden == "1")
+
+    if opcion == "1":
+        resultado = ordenar_por_nombre(datos_sistema, ascendente)
+    elif opcion == "2":
+        resultado = ordenar_por_poblacion(datos_sistema, ascendente)
+    elif opcion == "3":
+        resultado = ordenar_por_superficie(datos_sistema, ascendente)
+    else:
+        print("Opción inválida.")
+        return
+
+    mostrar_lista_paises(resultado)
+
+#Estadisticas
+def menu_estadisticas(datos_sistema):
+    print("\n--- ESTADÍSTICAS ---")
+    if not datos_sistema:
+        print("No hay países cargados para calcular estadísticas.")
+        return
+
+    mayor = pais_mayor_poblacion(datos_sistema)
+    menor = pais_menor_poblacion(datos_sistema)
+    prom_pob = promedio_poblacion(datos_sistema)
+    prom_sup = promedio_superficie(datos_sistema)
+    por_continente = cantidad_por_continente(datos_sistema)
+
+    print(f"País con mayor población: {mayor['nombre']} ({mayor['poblacion']})")
+    print(f"País con menor población: {menor['nombre']} ({menor['poblacion']})")
+    print(f"Promedio de población: {prom_pob:.2f}")
+    print(f"Promedio de superficie: {prom_sup:.2f} km²")
+    print("\nCantidad de países por continente:")
+    for continente, cantidad in por_continente.items():
+        print(f"  - {continente}: {cantidad}")
+
+
+
+
 # --- MENÚ PRINCIPAL Y CONTROLADOR (Persona A) ---
 
 def mostrar_menu():
@@ -158,10 +314,10 @@ def mostrar_menu():
     print("="*30)
     print("1. Agregar país")
     print("2. Modificar país")
-    print("3. Buscar país (Persona B)")
-    print("4. Filtrar países (Persona B)")
-    print("5. Ordenar países (Persona B)")
-    print("6. Ver estadísticas (Persona B)")
+    print("3. Buscar país")
+    print("4. Filtrar países")
+    print("5. Ordenar países")
+    print("6. Ver estadísticas")
     print("7. Salir")
     print("="*30)
 
@@ -180,13 +336,13 @@ def main():
             datos_sistema = modificar_pais(datos_sistema)
             guardar_csv(datos_sistema, archivo_datos)
         elif opcion == "3":
-            print("\nOpción no disponible - Módulo a cargo de Persona B.")
+            menu_buscar(datos_sistema)
         elif opcion == "4":
-            print("\nOpción no disponible - Módulo a cargo de Persona B.")
+            menu_filtrar(datos_sistema)
         elif opcion == "5":
-            print("\nOpción no disponible - Módulo a cargo de Persona B.")
+            menu_ordenar(datos_sistema)
         elif opcion == "6":
-            print("\nOpción no disponible - Módulo a cargo de Persona B.")
+            menu_estadisticas(datos_sistema)
         elif opcion == "7":
             print("\n¡Gracias por utilizar el sistema! Saliendo...")
             break
