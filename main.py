@@ -1,13 +1,10 @@
 import csv
 import os
 
-# --- LOGICA DE PERSISTENCIA (Persona A) ---
+# --- LOGICA DE PERSISTENCIA ---
 
-def leer_csv(nombre_archivo="paises.csv"):
-    """
-    Lee el archivo CSV y retorna una lista de diccionarios.
-    Maneja errores si el archivo no existe o está corrupto.
-    """
+def leer_csv(nombre_archivo="paises.csv"): #Lee archivo CSV retorna lista de diccionarios.
+
     lista_paises = []
     
     # Validación de archivo existente
@@ -36,11 +33,8 @@ def leer_csv(nombre_archivo="paises.csv"):
         
     return lista_paises
 
-def guardar_csv(lista_paises, nombre_archivo="paises.csv"):
-    """
-    Toma la lista de países que tenemos en Python y la escribe
-    adentro del archivo CSV para que los datos queden guardados.
-    """
+def guardar_csv(lista_paises, nombre_archivo="paises.csv"): #Toma lista y pasa a archivo CSV
+
     try:
         with open(nombre_archivo, mode="w", encoding="utf-8", newline="") as archivo:
             campos = ["nombre", "poblacion", "superficie", "continente"]            
@@ -51,11 +45,8 @@ def guardar_csv(lista_paises, nombre_archivo="paises.csv"):
     except Exception as e:
         print(f"Error al intentar guardar los datos: {e}")
 
-def agregar_pais(lista_paises):
-    """
-    Pide al usuario los datos de un nuevo país, los valida rigurosamente
-    y, si todo es correcto, lo añade a la lista del sistema.
-    """
+def agregar_pais(lista_paises): #solicitud de datos/validacion
+
     print("\n--- REGISTRAR NUEVO PAÍS ---")
     
     nombre = input("Ingrese el nombre del país: ").strip()
@@ -150,12 +141,12 @@ def modificar_pais(lista_paises):
         
     return lista_paises
 
-# --- MENÚ PRINCIPAL Y CONTROLADOR (Persona A) ---
+# --- MENÚ PRINCIPAL Y CONTROLADOR ---
 
 def mostrar_menu():
-    print("\n" + "="*30)
+    print("\n" + "="*40)
     print("      SISTEMA DE GESTIÓN DE PAÍSES")
-    print("="*30)
+    print("="*40)
     print("1. Agregar país")
     print("2. Modificar país")
     print("3. Buscar país (Persona B)")
