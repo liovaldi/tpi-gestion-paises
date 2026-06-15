@@ -1,3 +1,7 @@
+#Gaston Reynoso (Comision-10) - Ludmila Iovaldi (Comision-2)           Programacion I - UTN  
+
+#TPIntegrador: gestion de paises.
+
 import csv
 import os
 
