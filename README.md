@@ -210,9 +210,6 @@ Tecnicatura Universitaria en Programación
 Universidad Tecnológica Nacional (UTN)
 
 📚 Bibliografía
-https://docs.python.org/3/
-https://docs.python.org/3/library/csv.html
-https://greenteapress.com/wp/think-python-2e/
 Material de cátedra Programación I - UTN
 🔗 Enlaces
 
